@@ -2,17 +2,17 @@ Advanced Data Analytics – Synthetic Data & Big Data (DAMO630)
 
 This repository contains notebooks and code for DAMO630 – Advanced Data Analytics (MDA, University of Niagara Falls Canada).
 
-Goals
+Goals:
 
-Generate and evaluate synthetic data (classical methods + SDV models like CTGAN/GaussianCopula).
+* Generate and evaluate synthetic data (classical methods + SDV models like CTGAN/GaussianCopula).
 
-Apply evaluation metrics: statistical similarity, utility (TSTR), privacy checks.
+* Apply evaluation metrics: statistical similarity, utility (TSTR), privacy checks.
 
-Use HDFS, MapReduce, and PySpark to analyze NYC Taxi data.
+* Use HDFS, MapReduce, and PySpark to analyze NYC Taxi data.
 
-Perform frequent pattern mining (FPGrowth) and clustering (K-Means) to extract business insights.
+* Perform frequent pattern mining (FPGrowth) and clustering (K-Means) to extract business insights.
 
-Requirements
+*** Requirements
 
 See requirements.txt:
 
@@ -30,7 +30,7 @@ pyspark>=3.5,<4.0
 hdfs>=2.7,<3.0
 
 
-Install with:
+* Install with:
 
 pip install -r requirements.txt
 
@@ -42,6 +42,5 @@ NYC Taxi Trip Data
 
 Deliverables
 
-Challenge 1: Synthetic data generation + evaluation.
-
-Challenge 2: NYC Taxi analysis with Big Data tools.
+* Challenge 1: Synthetic data generation + evaluation.
+* Challenge 2: NYC Taxi analysis with Big Data tools (PENDING)
