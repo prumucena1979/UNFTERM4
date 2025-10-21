@@ -1,0 +1,42 @@
+{
+    "METADATA_SPEC_VERSION": "SINGLE_TABLE_V1",
+    "primary_key": "rownames",
+    "columns": {
+        "rownames": {
+            "sdtype": "id"
+        },
+        "health": {
+            "sdtype": "categorical"
+        },
+        "age": {
+            "sdtype": "numerical"
+        },
+        "limit": {
+            "sdtype": "categorical"
+        },
+        "gender": {
+            "sdtype": "categorical"
+        },
+        "insurance": {
+            "sdtype": "categorical"
+        },
+        "married": {
+            "sdtype": "categorical"
+        },
+        "selfemp": {
+            "sdtype": "categorical"
+        },
+        "family": {
+            "sdtype": "numerical"
+        },
+        "region": {
+            "sdtype": "categorical"
+        },
+        "ethnicity": {
+            "sdtype": "categorical"
+        },
+        "education": {
+            "sdtype": "categorical"
+        }
+    }
+}
