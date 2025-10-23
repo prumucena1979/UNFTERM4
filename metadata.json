@@ -1,5 +1,4 @@
 {
-    "METADATA_SPEC_VERSION": "SINGLE_TABLE_V1",
     "primary_key": "rownames",
     "columns": {
         "rownames": {
@@ -38,5 +37,6 @@
         "education": {
             "sdtype": "categorical"
         }
-    }
+    },
+    "METADATA_SPEC_VERSION": "SINGLE_TABLE_V1"
 }

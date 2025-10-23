@@ -1,114 +1,83 @@
-Advanced Data Analytics – Assignment (DAMO630)
+# DAMO630 – Advanced Data Analytics: Assignment 1
 
-This repository contains the deliverables for a Master's level assignment in the Master of Data Analytics program. The work was completed for the course "Advanced Data Analytics" (DAMO630) and demonstrates techniques in synthetic data generation, evaluation, and large-scale data analysis using Hadoop and PySpark.
+## Project Overview: Privacy and Urban Mobility Analytics
 
-Overview
---------
-The project is organized into two ordered Business Challenges. Work proceeds from Business Challenge 01 through Business Challenge 02 in the notebook(s):
+This repository contains the solution for **Assignment 1** of the DAMO630 – Advanced Data Analytics course at the University of Niagara Falls Canada (UNF). The assignment addresses two distinct, yet critical, areas of modern data analytics: **Privacy-Preserving Analytics with Synthetic Data** and **Big Data Mining for Urban Mobility**.
 
-- Business Challenge 01 — Synthetic Data Generation & Evaluation
-	- Objectives: build baseline and advanced synthetic data using classical noise baselines and SDV models (GaussianCopula, CTGAN), save metadata and models for reproducibility, and evaluate generated data using statistical and utility metrics (quality reports, diagnostic reports, TSTR, duplication/privacy checks).
-	- Key artifacts: notebooks and code that fit SDV models, sample synthetic outputs, and evaluation scripts.
+The solution is presented in the Jupyter Notebook: `Group#03_DAMO630_29_Assignment01_Refined.ipynb`.
 
-- Business Challenge 02 — NYC Taxi Trip Data (Big Data Analysis)
-	- Objectives: demonstrate HDFS connectivity and data preparation, show a small MapReduce (Hadoop Streaming) example, and perform PySpark analytics including frequent pattern mining (FPGrowth) and clustering (K-Means) to extract operational insights from taxi trip data.
-	- Key artifacts: PySpark notebook cells that connect to HDFS, parquet readers, minimal CSV exports for streaming, mapper/reducer scripts for Hadoop Streaming, and PySpark pipelines for FPGrowth and K-Means.
+| Detail | Value |
+| :--- | :--- |
+| **Course** | DAMO630 – Advanced Data Analytics |
+| **Institution** | University of Niagara Falls Canada (UNF) |
+| **Assignment** | Assignment 1 |
+| **Group** | Group #03 |
+| **Date** | October 2025 |
 
-Requirements
-------------
-See `requirements.txt` for the Python package requirements used during development. Example key packages:
+---
 
-- numpy, pandas, scikit-learn, matplotlib, seaborn
-- sdv, sdmetrics, rdt, copulas, torch
-- pyspark
+## Business Challenge 1: Privacy-Preserving Analytics with Synthetic Data
 
-Install with:
+**Goal:** To generate and evaluate synthetic patient data for research collaboration, ensuring compliance with privacy regulations (e.g., HIPAA, GDPR) while maintaining data utility.
 
-pip install -r requirements.txt
+### Technical Tasks and Methodology
 
-Datasets
---------
-- `Datasets/HealthInsurance.csv` — used for Business Challenge 01 (synthetic data experiments)
-- NYC Taxi Trip Data (parquet on HDFS) — referenced in Business Challenge 02; the notebook expects the taxi parquet file to be available on the student's Hadoop VM at `/data/tlc/trips/yellow_tripdata_2023-05.parquet` or similar. HDFS access is required to fully run BC02 cells.
+| Task | Description | Key Tools |
+| :--- | :--- | :--- |
+| **Task I: Exploratory Analysis** | Analyze distributions, identify privacy-sensitive attributes, and visualize feature correlations of the real patient dataset. | Pandas, Matplotlib, Seaborn |
+| **Task II: Baseline Generation** | Apply a classical method (e.g., noise injection or Faker-based rules) to create a synthetic dataset and compare its distributions to the real data. | NumPy, Pandas |
+| **Task III: Advanced SDV Generation** | Train two advanced synthetic data models, **CTGAN** and **GaussianCopula**, using the Synthetic Data Vault (SDV) library. | SDV (CTGAN, GaussianCopula) |
+| **Task IV: Evaluation** | Evaluate the generated synthetic datasets across three dimensions: **Statistical Similarity** (e.g., KS test, correlation preservation), **Utility** (TSTR: Train on Synthetic, Test on Real), and **Privacy** (row-level duplication check). | SDMetrics, Scikit-learn (RandomForest) |
 
-How the notebook is structured
------------------------------
-- Cells relating to Business Challenge 01 appear first and implement synthetic data generation and evaluation steps.
-- Cells for Business Challenge 02 follow and assume access to a Hadoop VM (NameNode at `hdfs://hadoop-VirtualBox:9000`). BC02 includes:
-	- environment constants and SparkSession setup (idempotent),
-	- HDFS probe using the Spark JVM API,
-	- Parquet load and exploration (schema, counts, sample),
-	- optional CSV export for Hadoop Streaming,
-	- sample `mapper.py` and `reducer.py` for Hadoop Streaming (to compute total fare per pickup zone),
-	- PySpark FPGrowth example for frequent location pairs,
-	- PySpark K-Means clustering pipeline for trip segmentation.
+**Key Insight:** The evaluation metrics provide a quantitative basis for determining the trustworthiness of the synthetic data for external sharing, balancing the trade-off between privacy preservation and analytical utility.
 
-Notes & running tips
---------------------
-- To run Business Challenge 02 you need:
-	- a running Hadoop VM reachable from the notebook kernel (example host: `hadoop-VirtualBox`, RPC port `9000`),
-	- the taxi parquet file uploaded to HDFS (`/data/tlc/trips/yellow_tripdata_2023-05.parquet`),
-	- a Spark-enabled Python kernel configured with the same Java/PYSPARK settings (see notebook cells that set JAVA_HOME and SPARK_HOME for local runs).
+---
 
-- The notebook includes idempotent SparkSession creation and JVM-based HDFS checks so you can re-run cells safely.
+## Business Challenge 2: Mining NYC Taxi Trip Data with PySpark
 
-Contributing / Notes
---------------------
-- This repository holds a student assignment — please treat it as an educational artifact. If you re-run or adapt the notebooks make sure to not overwrite system HDFS paths unintentionally.
+**Goal:** To uncover travel patterns and segment riders from a large-scale NYC Taxi Trip dataset using Big Data frameworks (Hadoop/HDFS) and PySpark, providing actionable insights for city planners and transportation companies.
 
-License / Attribution
----------------------
-- (Add your preferred license or university attribution here)
+### Technical Tasks and Methodology
 
-How to run BC02 locally (Hadoop + Spark)
---------------------------------------
-This section provides a short, repeatable checklist to run Business Challenge 02 locally from a Windows PowerShell environment that can reach your Hadoop VM. Adjust paths to match your local JDK and Spark installs.
+This challenge directly addresses **Learning Outcomes 3 (Big Data Workflows)** and **4 (Mining Techniques)**. The implementation utilizes a pseudo-distributed Hadoop environment with PySpark for large-scale processing.
 
-Prerequisites
- - A running Hadoop VM (example hostname used in the notebook: `hadoop-VirtualBox`) with NameNode RPC port `9000` (adjust in the notebook if your VM uses a different port).
- - The taxi parquet file uploaded to HDFS at `/data/tlc/trips/yellow_tripdata_2023-05.parquet`.
- - A local Python environment with the packages in `requirements.txt` installed.
+#### 1. BC2.I: Big Data Setup & Data Preparation (LO3)
 
-1) PowerShell (session) — set environment variables for the current shell
+*   **Objective:** Establish connectivity to the HDFS NameNode and load the NYC Yellow Taxi Trip data (May 2023 Parquet file) into a Spark DataFrame.
+*   **Execution:** Configuration of `HADOOP_USER_NAME` and `spark.hadoop.fs.defaultFS` to ensure HDFS compatibility. Initial data inspection (schema, count, statistics) is performed.
+*   **MapReduce Input Preparation:** A minimal CSV containing only `PULocationID` and `fare_amount` is extracted and written back to HDFS as input for the legacy MapReduce task.
 
-```powershell
-$env:JAVA_HOME = 'C:\Program Files\Eclipse Adoptium\jdk-17.0.16.8-hotspot'
-$env:SPARK_HOME = 'C:\spark'
-$env:PATH = "$env:JAVA_HOME\bin;$env:SPARK_HOME\bin;$env:PATH"
-# Optional: point PySpark driver to the current Python
-$env:PYSPARK_DRIVER_PYTHON = (Get-Command python).Source
-$env:PYSPARK_PYTHON = (Get-Command python).Source
-# Ensure Hadoop user used by the notebooks is 'hadoop' (used for demo/demo VM setups)
-$env:HADOOP_USER_NAME = 'hadoop'
-```
+#### 2. BC2.II: Hadoop Streaming / MapReduce (LO3)
 
-Note: Replace the JDK path with your installed JDK if different (some notebooks used `C:\Program Files\Java\jdk-17` in examples).
+*   **Objective:** Compute the total fare revenue per pickup location using the foundational **MapReduce** paradigm.
+*   **Execution:** Custom Python scripts (`mapper.py` and `reducer.py`) are defined to process the CSV input from HDFS. The `mapper` extracts the key-value pair (`PULocationID`, `fare_amount`), and the `reducer` aggregates the total fare for each key.
+*   **Justification:** This task demonstrates an understanding of the classic distributed processing model. The notebook includes a discussion on the limitations of MapReduce (speed, disk I/O) compared to modern, in-memory frameworks like Spark.
 
-2) Install Python packages (inside the same environment/session)
+#### 3. BC2.III: Frequent Pattern Mining (FPGrowth) (LO4)
 
-```powershell
-pip install -r requirements.txt
-```
+*   **Objective:** Identify frequent travel patterns (origin-destination pairs) and strong association rules using PySpark MLlib's **FPGrowth** algorithm.
+*   **Execution:** Trips are treated as "baskets" containing the `PULocationID` and `DOLocationID`. FPGrowth is applied to find frequent itemsets and derive association rules, which are quantified by **support**, **confidence**, and **lift**.
+*   **Urban Mobility Insight:** Rules with high lift indicate non-random, strong travel flows (e.g., specific commuting corridors or airport routes), which are critical for infrastructure planning and service optimization.
 
-3) Start Jupyter from the same environment
+#### 4. BC2.IV: Rider Segmentation (K-Means Clustering) (LO4)
 
-```powershell
-jupyter lab   # or jupyter notebook
-```
+*   **Objective:** Segment taxi trips into distinct rider personas based on key trip characteristics using **K-Means Clustering**.
+*   **Execution:** Features (`trip_distance`, `fare_amount`, `pickup_hour`, `passenger_count`) are prepared using **VectorAssembler** and **StandardScaler** to ensure proper scaling. K-Means is applied (e.g., with k=3).
+*   **Rider Personas:** The resulting cluster centers are analyzed by calculating the mean of the original features for each cluster. This allows for the interpretation of distinct rider personas (e.g., "Short-Distance Commuters," "Airport Travelers," "Late-Night Riders") and the suggestion of tailored services or pricing strategies.
 
-4) Upload the parquet file to HDFS (run on the Hadoop VM shell, not on your Windows host)
+---
+
+## How to Run the Notebook
+
+The notebook is designed to be executed in a specific Big Data environment.
+
+1.  **Environment Setup:** Ensure you have a running pseudo-distributed Hadoop cluster (HDFS and YARN) with PySpark configured. The notebook assumes the HDFS NameNode is accessible via `hdfs://hadoop-VirtualBox:9000`.
+2.  **Data Placement:** The NYC Taxi Trip data (`yellow_tripdata_2023-05.parquet`) must be uploaded to the HDFS path `/data/tlc/trips/`.
+3.  **Execution:** Open `Group#03_DAMO630_29_Assignment01_Refined.ipynb` and run the cells sequentially. The notebook is self-contained and includes all necessary PySpark setup and imports.
+4.  **MapReduce Step:** The MapReduce task (BC2.II) requires the `mapper.py` and `reducer.py` scripts (defined in the notebook) to be saved and executed on the Hadoop VM using the provided shell command.
 
 ```bash
-# On the Hadoop VM shell (example)
-# place the parquet file in the VM, then:
-hdfs dfs -mkdir -p /data/tlc/trips
-hdfs dfs -put yellow_tripdata_2023-05.parquet /data/tlc/trips/
-hdfs dfs -ls /data/tlc/trips
+# Example MapReduce execution command (run on the Hadoop VM)
+hdfs dfs -cat /user/hadoop/taxi/yellow_2023-05_mincsv/part-* | \
+  python3 mapper.py | sort | python3 reducer.py > total_fare_by_pu.txt
 ```
-
-Tips
-- If you use `setx` to persist environment variables in Windows, open a new shell afterwards; session variables (shown above) are enough for a running Jupyter server.
-- The notebook includes idempotent SparkSession creation and JVM-based HDFS checks — run the BC02 cells in sequence.
-- If your NameNode uses a different host/port, set `NN_HOST` and `NN_PORT` in the BC02 environment cell before starting Spark.
-
-If you want, I can add an example PowerShell `run_bc02.ps1` script to the repo that sets these variables and launches Jupyter automatically.
